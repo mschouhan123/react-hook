@@ -1,34 +1,48 @@
-import React, { useState,useEffect } from "react";
+import React, { useReducer } from "react";
 import "./style.css";
 
-const UseEffect = () => {
-  const [count, setCount] = useState(0);
-
-  function setCountBtn(params) {
-    console.log(params);
-    if (params === "increment") {
-      setCount(count + 1);
-    } else {
-      if(count >=1){
-          setCount(count - 1);
-      }  
+const reducer = (state, action) => {
+    console.log("action --> ", action,state);
+   
+    if(action.type === "INCR"){
+      state = state + 1;
     }
+
+    if(state > 0 && action.type === "DEC"){
+        state = state - 1;
+    }
+    
+
+    return state;
+}
+
+
+const UserReducer = () => {
+  const initialData = 10 ; 
+  const [state, dispatch] = useReducer(reducer, 0);
+
+  console.log(state);
+  function setCountBtn(params) {
+    if (params === "increment") {
+     dispatch({type:"INCR"})
+    } else {
+      dispatch({type:"DEC"})
+      
+    }
+
+   
   }
 
-  useEffect(() => {
-    // console.log("hii hello ");
-    document.title = `Chats(${count})`;
-  })
-  
   return (
     <>
       <div className="center_div">
-        <p>{count}</p>
+        <p>{state}</p>
         <div
           onClick={() => {
             setCountBtn("increment");
           }}
-          class="button2">
+          class="button2"
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -36,7 +50,7 @@ const UseEffect = () => {
           Increment
         </div>
 
-        {/* <div
+        <div
           onClick={() => {
             setCountBtn("decrement");
           }}
@@ -47,10 +61,10 @@ const UseEffect = () => {
           <span></span>
           <span></span>
           Decrement
-        </div> */}
+        </div>
       </div>
     </>
   );
 };
 
-export default UseEffect;
+export default UserReducer;
